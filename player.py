@@ -25,13 +25,12 @@ class Player(CircleShape):
         self.rotation += PLAYER_TURN_SPEED * dt
 
     def update(self, dt):
+        # Check if the player's shot is on cooldown, if so, reduce cooldown
         if self.cooldown > 0:
             self.cooldown -= dt
+        
+        # Handle keyboard controls
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
-            self.rotate(dt * -1)
-        if keys[pygame.K_d]:
-            self.rotate(dt)
         if keys[pygame.K_w]:
             self.move(dt)
         if keys[pygame.K_s]:
@@ -39,6 +38,12 @@ class Player(CircleShape):
         if keys[pygame.K_SPACE]:
             if self.cooldown <= 0:
                 self.shoot()
+
+        # Handle mouse aiming
+        mouse_pos = pygame.math.Vector2(pygame.mouse.get_pos())
+        mouse_dir = mouse_pos - self.position
+        ref = pygame.math.Vector2(0, 1)
+        self.rotation = -mouse_dir.angle_to(ref)
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
