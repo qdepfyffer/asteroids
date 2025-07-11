@@ -48,6 +48,7 @@ def main():
         screen.fill("black")
 
         for entity in drawable:
+            # pygame.draw.circle(screen, "red", entity.position, entity.radius, 2)  # Draw hitboxes
             entity.draw(screen)
 
         for asteroid in asteroids:
@@ -55,7 +56,7 @@ def main():
                 print("Game over!")
                 exit(0)
             for shot in shots:
-                if asteroid.is_colliding(shot):
+                if shot.is_colliding(asteroid):
                     asteroid.split()
                     shot.kill()
 
